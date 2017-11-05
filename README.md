@@ -39,7 +39,7 @@ You can decorate your model properties with MongoRelation attirube.
 
         public int GenderId { get; set; }
 
-        [MongoRelation(FromCollection = "Genders", LocalFieldId = nameof(GenderId), ForeignValueField = "Text", ForeignFieldId = "_id")]
+        [MongoRelation(FromCollection = "Genders", LocalFieldId = nameof(GenderId), PrincipalValueField = "Text", PrincipalFieldId = "_id")]
         [BsonIgnoreIfDefault]
         public string GenderText { get; set; }
 
