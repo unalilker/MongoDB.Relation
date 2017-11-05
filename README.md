@@ -50,7 +50,7 @@ You can decorate your model properties with MongoRelation attirube.
 ```
 **Explanation of relation at GenderText:** Relation will use GenderId in our class, and look for _id field at Genders collection. If a matched record found, it will get Text property in matched record and set the value to our GenderText field.
 
-**Explanation of relation at StudentClass:** Relation will use ClassId in our class, and look for _id field at Classes collection. If a matched record found, it will get matched record and set the value to our StudentClass field.
+**Explanation of relation at StudentClass:** Relation will use ClassId in our class, and look for _id field at Classes collection. If a matched record found, it will get matched record and set the record to our StudentClass field.
 
 ##
 
