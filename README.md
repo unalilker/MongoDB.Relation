@@ -72,7 +72,7 @@ You can decorate your model properties with MongoRelation attirube.
         public List<Student> Students { get; set; }
     }
 ```
-**Explanation of relation at Students:** Relation will use StudentIds in our class, and look for _id field at Students collection. If matched records found, it will get matched records and set the value to our Students field. 
+**Explanation of relation at Students:** Relation will use StudentIds in our class, and look for _id field at Students collection. If matched records found, it will get matched records and set the records to our Students field. 
 
 ##
 
