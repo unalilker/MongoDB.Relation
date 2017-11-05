@@ -25,6 +25,9 @@ You can decorate your model properties with MongoRelation attirube.
 
 ### Model Configurations
 
+**You must decorate relation properties with BsonIgnoreIfDefault attribute.**
+
+
 ```
     public class Student
     {
@@ -48,9 +51,9 @@ You can decorate your model properties with MongoRelation attirube.
         public Class StudentClass { get; set; }
     }
 ```
-**Explanation of relation in GenderText:** Relation will use GenderId in our class, and look for _id field at Genders collection. If a matched record found, it will get Text property in matched record and set the value to our GenderText field.
+**Explanation of relation at GenderText:** Relation will use GenderId in our class, and look for _id field at Genders collection. If a matched record found, it will get Text property in matched record and set the value to our GenderText field.
 
-**Explanation of relation in StudentClass:** Relation will use ClassId in our class, and look for _id field at Classes collection. If a matched record found, it will get matched record and set the value to our StudentClass field.
+**Explanation of relation at StudentClass:** Relation will use ClassId in our class, and look for _id field at Classes collection. If a matched record found, it will get matched record and set the value to our StudentClass field.
 
 
 
@@ -72,7 +75,7 @@ You can decorate your model properties with MongoRelation attirube.
         public List<Student> Students { get; set; }
     }
 ```
-**Explanation of relation in Students:** Relation will use StudentIds in our class, and look for _id field at Students collection. If matched records found, it will get matched records and set the value to our Students field. 
+**Explanation of relation at Students:** Relation will use StudentIds in our class, and look for _id field at Students collection. If matched records found, it will get matched records and set the value to our Students field. 
 
 
 
@@ -165,6 +168,8 @@ Result for return Json(students.ToList());
    }
   ]
 ```
+
+
 
 
 Result for return Json(classes.ToList());
