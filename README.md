@@ -22,11 +22,11 @@ You can decorate your model properties with MongoRelation attirube.
 
 **PrincipalFieldId:** Principal collection Id field, which will be matched with LocalFieldId. Default value is "_id".
 
-
+##
 ### Model Configurations
 
 **You must decorate relation properties with BsonIgnoreIfDefault attribute.**
-
+##
 
 ```
     public class Student
@@ -55,7 +55,7 @@ You can decorate your model properties with MongoRelation attirube.
 
 **Explanation of relation at StudentClass:** Relation will use ClassId in our class, and look for _id field at Classes collection. If a matched record found, it will get matched record and set the value to our StudentClass field.
 
-
+##
 
 ```
     public class Class
@@ -77,7 +77,7 @@ You can decorate your model properties with MongoRelation attirube.
 ```
 **Explanation of relation at Students:** Relation will use StudentIds in our class, and look for _id field at Students collection. If matched records found, it will get matched records and set the value to our Students field. 
 
-
+##
 
 ```
     public class Gender
@@ -111,7 +111,7 @@ using Simple.MongoDB.Relation;
 
 ```
 ### Results
-
+##
 Result for return Json(students.ToList());
 ```
   [
@@ -168,10 +168,7 @@ Result for return Json(students.ToList());
    }
   ]
 ```
-
-
-
-
+##
 Result for return Json(classes.ToList());
 ```
   [
