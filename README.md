@@ -53,6 +53,7 @@ You can decorate your model properties with MongoRelation attirube.
 **Explanation of relation in StudentClass:** Relation will use ClassId in our class, and look for _id field at Classes collection. If a matched record found, it will get matched record and set the value to our StudentClass field.
 
 
+
 ```
     public class Class
     {
@@ -74,6 +75,7 @@ You can decorate your model properties with MongoRelation attirube.
 **Explanation of relation in Students:** Relation will use StudentIds in our class, and look for _id field at Students collection. If matched records found, it will get matched records and set the value to our Students field. 
 
 
+
 ```
     public class Gender
     {
@@ -84,10 +86,14 @@ You can decorate your model properties with MongoRelation attirube.
     }
 ```
 
+
 ## Usage
 
 Import Reference
-**using Simple.MongoDB.Relation;**
+```
+using Simple.MongoDB.Relation;
+```
+
 
 ```
     var client = new MongoClient("yourconnectionstring");
@@ -97,8 +103,8 @@ Import Reference
     var studentsCollection = database.GetCollection<Student>("Students");
 
 
-    var students = studentsCollection.**FindWithRelations()**;
-    var classes = classesCollection.**FindWithRelations()**;
+    var students = studentsCollection.FindWithRelations();
+    var classes = classesCollection.FindWithRelations();
 
 ```
 ### Results
