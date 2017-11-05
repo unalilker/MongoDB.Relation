@@ -1,87 +1,214 @@
 # Simple.MongoDB.Relation
 
-One Paragraph of project description goes here
+You can create simple one level deep relations with attributes
 
-## Getting Started
+## Installing
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+You can install package directly from nuget.org 
 
-### Prerequisites
+Install-Package Simple.MongoDB.Relation -Version 1.0.0
 
-What things you need to install the software and how to install them
+## Configuration
 
-```
-Give examples
-```
+You can decorate your model properties with MongoRelation attirube.
 
-### Installing
+### Definition of Attribute Properties
 
-A step by step series of examples that tell you have to get a development env running
+**FromCollection:** Name of principal (remote) collection
 
-Say what the step will be
+**LocalFieldId:** Name of local property which will be used for relation.
 
-```
-Give the example
-```
+**ForeignValueField:** If relation property is a primitive type. This field will be taken from principal entity and will be setted to our relation field. Default value is "Name".
 
-And repeat
+**PrincipalFieldId:** Principal collection Id field, which will be matched with LocalFieldId. Default value is "_id".
 
-```
-until finished
-```
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+### Model Configurations
 
 ```
-Give an example
+    public class Student
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string ClassId { get; set; }
+
+        public int GenderId { get; set; }
+
+        [MongoRelation(FromCollection = "Genders", LocalFieldId = nameof(GenderId), ForeignValueField = "Text", ForeignFieldId = "_id")]
+        [BsonIgnoreIfDefault]
+        public string GenderText { get; set; }
+
+        [MongoRelation(FromCollection = "Classes", LocalFieldId = nameof(ClassId))]
+        [BsonIgnoreIfDefault]
+        public Class StudentClass { get; set; }
+    }
+```
+**Explanation of relation in GenderText:** Relation will use GenderId in our class, and look for _id field at Genders collection. If a matched record found, it will get Text property in matched record and set the value to our GenderText field.
+
+**Explanation of relation in StudentClass:** Relation will use ClassId in our class, and look for _id field at Classes collection. If a matched record found, it will get matched record and set the value to our StudentClass field.
+
+
+```
+    public class Class
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonIgnoreIfNull]
+        public List<string> StudentIds { get; set; }
+
+        [MongoRelation(FromCollection = "Students", LocalFieldId = nameof(StudentIds))]
+        [BsonIgnoreIfDefault]
+        public List<Student> Students { get; set; }
+    }
+```
+**Explanation of relation in Students:** Relation will use StudentIds in our class, and look for _id field at Students collection. If matched records found, it will get matched records and set the value to our Students field. 
+
+
+```
+    public class Gender
+    {
+        [BsonId]
+        public int Id { get; set; }
+
+        public string Text { get; set; }
+    }
 ```
 
-### And coding style tests
+## Usage
 
-Explain what these tests test and why
+Import Reference
+**using Simple.MongoDB.Relation;**
 
 ```
-Give an example
+    var client = new MongoClient("yourconnectionstring");
+    var database = client.GetDatabase("test");
+
+    var classesCollection = database.GetCollection<Class>("Classes");
+    var studentsCollection = database.GetCollection<Student>("Students");
+
+
+    var students = studentsCollection.**FindWithRelations()**;
+    var classes = classesCollection.**FindWithRelations()**;
+
+```
+### Results
+
+Result for return Json(students.ToList());
+```
+  [
+   {
+      "id":"59fe19d9f05d8c237858b96e",
+      "name":"Barrack Obama",
+      "classId":"59fe19d6f05d8c237858b96d",
+      "genderId":1,
+      "genderText":"Male",
+      "studentClass":{
+         "id":"59fe19d6f05d8c237858b96d",
+         "name":"Class One",
+         "studentIds":[
+            "59fe19d9f05d8c237858b96e",
+            "59fe19d9f05d8c237858b96f",
+            "59fe19d9f05d8c237858b970"
+         ],
+         "students":null
+      }
+   },
+   {
+      "id":"59fe19d9f05d8c237858b96f",
+      "name":"Vladimir Putin",
+      "classId":"59fe19d6f05d8c237858b96d",
+      "genderId":1,
+      "genderText":"Male",
+      "studentClass":{
+         "id":"59fe19d6f05d8c237858b96d",
+         "name":"Class One",
+         "studentIds":[
+            "59fe19d9f05d8c237858b96e",
+            "59fe19d9f05d8c237858b96f",
+            "59fe19d9f05d8c237858b970"
+         ],
+         "students":null
+      }
+   },
+   {
+      "id":"59fe19d9f05d8c237858b970",
+      "name":"Hillary Clinton",
+      "classId":"59fe19d6f05d8c237858b96d",
+      "genderId":2,
+      "genderText":"Female",
+      "studentClass":{
+         "id":"59fe19d6f05d8c237858b96d",
+         "name":"Class One",
+         "studentIds":[
+            "59fe19d9f05d8c237858b96e",
+            "59fe19d9f05d8c237858b96f",
+            "59fe19d9f05d8c237858b970"
+         ],
+         "students":null
+      }
+   }
+  ]
 ```
 
-## Deployment
 
-Add additional notes about how to deploy this on a live system
+Result for return Json(classes.ToList());
+```
+  [
+   {
+      "id":"59fe19d6f05d8c237858b96d",
+      "name":"Class One",
+      "studentIds":[
+         "59fe19d9f05d8c237858b96e",
+         "59fe19d9f05d8c237858b96f",
+         "59fe19d9f05d8c237858b970"
+      ],
+      "students":[
+         {
+            "id":"59fe19d9f05d8c237858b96e",
+            "name":"Barrack Obama",
+            "classId":"59fe19d6f05d8c237858b96d",
+            "genderId":1,
+            "genderText":null,
+            "studentClass":null
+         },
+         {
+            "id":"59fe19d9f05d8c237858b96f",
+            "name":"Vladimir Putin",
+            "classId":"59fe19d6f05d8c237858b96d",
+            "genderId":1,
+            "genderText":null,
+            "studentClass":null
+         },
+         {
+            "id":"59fe19d9f05d8c237858b970",
+            "name":"Hillary Clinton",
+            "classId":"59fe19d6f05d8c237858b96d",
+            "genderId":2,
+            "genderText":null,
+            "studentClass":null
+         }
+      ]
+   }
+  ]
+```
 
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **İlker Ünal** 
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License.
 
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
