@@ -6,7 +6,7 @@ You can create simple (one level deep) relations with attributes
 
 You can install package directly from nuget.org 
 
-Install-Package Simple.MongoDB.Relation -Version 1.0.0
+Install-Package Simple.MongoDB.Relation -Version 1.0.1
 
 ## Configuration
 
