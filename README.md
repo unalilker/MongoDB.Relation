@@ -14,13 +14,10 @@ You can decorate your model properties with MongoRelation attirube.
 
 ### Definition of Attribute Properties
 
-**FromCollection:** Name of principal (remote) collection
-
-**LocalFieldId:** Name of local property which will be used for relation.
-
-**ForeignValueField:** If relation property is a primitive type. This field will be taken from principal entity and will be setted to our relation field. Default value is "Name".
-
-**PrincipalFieldId:** Principal collection Id field, which will be matched with LocalFieldId. Default value is "_id".
+**FromCollection:** Name of principal (remote) collection  
+**LocalFieldId:** Name of local property which will be used for relation.  
+**ForeignValueField:** If relation property is a primitive type. This field will be taken from principal entity and will be setted to our relation field. Default value is "Name".  
+**PrincipalFieldId:** Principal collection Id field, which will be matched with LocalFieldId. Default value is "_id".  
 
 ##
 ### Model Configurations
