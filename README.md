@@ -105,6 +105,68 @@ using Simple.MongoDB.Relation;
     var classesCollection = database.GetCollection<Class>("Classes");
     var studentsCollection = database.GetCollection<Student>("Students");
 
+    if (!classesCollection.Find(x => true).ToList().Any())
+    {
+        var classOne = new Class()
+        {
+            Id = ObjectId.GenerateNewId().ToString(),
+            Name = "Class One"
+        };
+
+        classesCollection.InsertOne(classOne);
+
+        var genderMale = new Gender()
+        {
+            Id = 1,
+            Text = "Male"
+        };
+
+        var genderFemale = new Gender()
+        {
+            Id = 2,
+            Text = "Female"
+        };
+
+        gendersCollection.InsertOne(genderMale);
+        gendersCollection.InsertOne(genderFemale);
+
+
+        var student1 = new Student()
+        {
+            Id = ObjectId.GenerateNewId().ToString(),
+            ClassId = classOne.Id,
+            GenderId = genderMale.Id,
+            Name = "Barrack Obama"
+        };
+
+        var student2 = new Student()
+        {
+            Id = ObjectId.GenerateNewId().ToString(),
+            ClassId = classOne.Id,
+            GenderId = genderMale.Id,
+            Name = "Vladimir Putin"
+        };
+
+        var student3 = new Student()
+        {
+            Id = ObjectId.GenerateNewId().ToString(),
+            ClassId = classOne.Id,
+            GenderId = genderFemale.Id,
+            Name = "Hillary Clinton"
+        };
+
+        studentsCollection.InsertOne(student1);
+        studentsCollection.InsertOne(student2);
+        studentsCollection.InsertOne(student3);
+
+
+        classOne.StudentIds = new List<string>()
+        {
+            student1.Id, student2.Id, student3.Id
+        };
+
+        classesCollection.ReplaceOne(x => x.Id == classOne.Id, classOne);
+    }
 
     var students = studentsCollection.FindWithRelations();
     var classes = classesCollection.FindWithRelations();
