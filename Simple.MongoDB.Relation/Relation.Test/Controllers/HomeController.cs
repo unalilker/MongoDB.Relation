@@ -13,8 +13,7 @@ namespace Relation.Test.Controllers
     {
         public IActionResult Index()
         {
-           // var client = new MongoClient("yourconnectionstring");
-            var client = new MongoClient("mongodb://admin:9yuXy9bbw9SWiVVs@atlas-shard-00-00-vjqkb.mongodb.net:27017,atlas-shard-00-01-vjqkb.mongodb.net:27017,atlas-shard-00-02-vjqkb.mongodb.net:27017/test?ssl=true&replicaSet=Atlas-shard-0&authSource=admin");
+            var client = new MongoClient("yourconnectionstring");
             var database = client.GetDatabase("test");
 
             var classesCollection = database.GetCollection<Class>("Classes");
