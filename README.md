@@ -1,6 +1,6 @@
 # Simple.MongoDB.Relation
 
-You can create simple one level deep relations with attributes
+You can create simple (one level deep) relations with attributes
 
 ## Installing
 
