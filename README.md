@@ -25,8 +25,8 @@ You can decorate your model properties with MongoRelation attirube.
 ##
 ### Model Configurations
 
-**You must decorate relation properties with BsonIgnoreIfDefault attribute.**
-##
+**IMPORTANT: You must decorate relation properties with BsonIgnoreIfDefault attribute.**
+
 
 ```
     public class Student
@@ -173,7 +173,7 @@ using Simple.MongoDB.Relation;
 
 ```
 ### Results
-##
+
 Result for return Json(students.ToList());
 ```
   [
